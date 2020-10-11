@@ -1,5 +1,7 @@
 # Rocket+HTTPS setup
 
+_If you just want the example code (slightly modified): [link](https://github.com/torsteingrindvik/web/blob/master/src/bin/acme-challenge.rs)_
+
 ## Setup
 Install `certbot`.
 I have it in my `$PATH`.

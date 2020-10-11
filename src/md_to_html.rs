@@ -4,8 +4,8 @@ use serde::Serialize;
 
 #[derive(Serialize)]
 /// A markdown struct ready to be serialized in the format Github's REST API expects
-struct Markdown<'m> {
-    text: &'m str,
+struct Markdown<'md> {
+    text: &'md str,
 }
 
 /// Embeds the given html and title into the template html and returns result
@@ -48,6 +48,7 @@ pub fn markdown_to_html(markdown: &str, title: &str) -> Result<String> {
     let markdown_as_json = serde_json::to_string(&Markdown { text: markdown })?;
 
     let client = reqwest::blocking::Client::new();
+
     let github_html = client
         .post("https://api.github.com/markdown")
         .body(markdown_as_json)
