@@ -1,0 +1,20 @@
+{{#*inline "page"}}
+
+{{#each cards}}
+<div class="card hovery text-centery shadowy roundy backgroundy">
+    <div class="card-image" style="background-image: url('/static/img/{{image}}.jpg');"></div>
+    <div class="card-text">
+        <h2>{{title}}</h2>
+        <p class="text-descripty">{{description}}</p>
+        {{#each contents}}
+        <div class="card-linky roundy"
+            style="background-color: rgba({{content_bg.0}}, {{content_bg.1}}}, {{content_bg.2}}, {{content_bg.3}});">
+            <a href="/{{link}}">{{description}}</a>
+        </div>
+        {{/each}}
+    </div>
+</div>
+{{/each}}
+
+{{/inline}}
+{{~> (parent)~}}

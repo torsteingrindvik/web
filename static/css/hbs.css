@@ -1,0 +1,111 @@
+body {
+    /* background: radial-gradient(#878787a6, #111d1b); */
+    background: radial-gradient(#004cffa6, #8b8b8b);
+}
+
+.grid-3-row-1-col {
+    /* A full height grid of 3 rows and 1 column */
+    display: grid;
+    /* Not 100 because it avoids scrollbar */
+    height: 98vh;
+    /* 
+        This is three rows. 1fr after divider specifies that we have 1 stretched column. 
+        The header will take 1 fraction, the footer takes 1 fraction. 
+        The main content is set to auto to adjust for the size of the actual contents.
+    */
+    grid: 1fr auto 1fr / 1fr;
+}
+
+.flex-center-wrap {
+    /* A container with centered wrapping content */
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.headfoot {
+    display: grid;
+    border-radius: 5px;
+    place-items: center;
+    font-size: 3rem;
+    margin-top: 1rem;
+    margin-bottom: 2rem;
+}
+
+.shadowy {
+    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.9);
+}
+
+.roundy {
+    border-radius: 20px;
+}
+
+.hovery {
+    transition: 0.5s ease;
+}
+
+.hovery:hover {
+    transform: scale(1.15);
+}
+
+.text-centery {
+    text-align: center;
+}
+
+.text-descripty {
+    font-style: italic;
+    background-color: rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+}
+
+.backgroundy {
+    background: #d2d1f7;
+}
+
+.card {
+    display: grid;
+    /* 
+        Image takes 225px.
+        Text takes rest.
+
+        Then we auto-fill as many columns we can given the minmax
+        constraint.
+    */
+    grid: 225px auto / repeat(auto-fill, minmax(auto, 500px));
+    margin: 3rem 2rem;
+}
+
+.markdown-body {
+    box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
+}
+
+@media (max-width: 767px) {
+    .markdown-body {
+        padding: 15px;
+    }
+}
+
+.card-image {
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    background-size: cover;
+}
+
+.fonty {
+    font-family: 'Roboto Condensed', sans-serif;
+}
+
+.card-linky {
+    padding: 0.5rem;
+    margin: 1.5rem;
+    font-weight: bold;
+    /* background-color: rgba(94, 227, 240, 0.5); */
+}
+
+a:hover, a:visited, a:link, a:active {
+    text-decoration: none;
+}

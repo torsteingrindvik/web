@@ -28,4 +28,4 @@ features = ["tls"]
 [dependencies.rocket_contrib]
 version = "0.4"
 default-features = false
-features = ["serve"]
+features = ["serve", "handlebars_templates"]

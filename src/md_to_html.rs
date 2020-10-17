@@ -41,7 +41,7 @@ fn process_html(html: &str, title: &str) -> Result<String> {
 }
 
 /// Given some markdown string, produce a html string
-pub fn markdown_to_html(markdown: &str, title: &str) -> Result<String> {
+pub fn markdown_to_html(markdown: &str, _title: &str) -> Result<String> {
     // We're cheating! Let Github render it for us!
 
     // Github wants it in Json format
@@ -57,9 +57,9 @@ pub fn markdown_to_html(markdown: &str, title: &str) -> Result<String> {
         .send()?
         .text()?;
 
-    let html = process_html(&github_html, title)?;
+    // let html = process_html(&github_html, title)?;
 
-    Ok(html)
+    Ok(github_html)
 }
 
 #[cfg(test)]
