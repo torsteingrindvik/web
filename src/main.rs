@@ -4,7 +4,7 @@
 // TODO: Remove decl_macro. See https://github.com/rust-lang/rust/issues/39412
 
 use anyhow::{anyhow, Result};
-use context::{Card, CardsContext, HtmlContext, LinkableContent, TokeiContext};
+use context::{Card, CardsContext, HtmlContext, LinkableContent, ListContext, TokeiContext};
 use helpers::html_helper;
 use md_to_html::markdown_to_html;
 use rocket::{catch, catchers, get, post, response::Redirect, routes, Data, Request, State};
@@ -53,10 +53,16 @@ fn root() -> Template {
                     title: "Tools 🧊",
                     description: "Let's create something",
                     image: "blue_water",
-                    contents: vec![LinkableContent {
-                        description: "Create a sharable Markdown render",
-                        link: "html/upload",
-                    }],
+                    contents: vec![
+                        LinkableContent {
+                            description: "Create a sharable Markdown render",
+                            link: "html/upload",
+                        },
+                        LinkableContent {
+                            description: "See the list of recent Markdown renders",
+                            link: "recent-md",
+                        },
+                    ],
                     content_bg: (0.0, 1.0, 0.0, 0.5),
                 },
                 Card {
@@ -107,6 +113,25 @@ fn tokei() -> Result<Template> {
         &TokeiContext {
             output: String::from_utf8(output.stdout)?,
             ..TokeiContext::default()
+        },
+    ))
+}
+
+/// Introspection: Display most recent Markdown docs
+#[get("/recent-md")]
+fn recent_md(db: State<DbConn>) -> Result<Template> {
+    let recent = match db.lock() {
+        Ok(locked) => locked.get_all_recent(10),
+        Err(e) => Err(anyhow!("Lock error: {:?}", e.to_string())),
+    }?;
+
+    dbg!(&recent);
+
+    Ok(Template::render(
+        "recent-md",
+        &ListContext {
+            links: recent,
+            ..ListContext::default()
         },
     ))
 }
@@ -205,7 +230,7 @@ fn main() -> Result<()> {
 
     println!("Launching Rocket");
     rocket::ignite()
-        .mount("/", routes![root, markdown, favicon, tokei])
+        .mount("/", routes![root, markdown, favicon, tokei, recent_md])
         .mount("/md", routes![stored_document])
         .mount("/upload", routes![upload])
         .mount("/html", routes![html])

@@ -18,9 +18,9 @@ Personal website stuff.
     - What for? Who knows, we'll find something
 
 ### Blocked on me
-* Create a "recently made Markdown pages" thing
-* Create a page for this `README.md` as well
-    - Normally it should be inside /md/, can we simply symlink this?
+* ~~Create a "recently made Markdown pages" thing~~
+* ~~Create a page for this `README.md` as well~~
+    - ~~Normally it should be inside /md/, can we simply symlink this?~~
 * Create minimally reproducible bug reports:
     - issue with `uri!()` import
     - issue with `crate_relative!()` import
@@ -28,10 +28,16 @@ Personal website stuff.
     - Use production
     - Set Limits
         - Upload
-* Misc code:
+* Technical debt:
     - Fix deprecation:
         > => Error: Response was a non-`Responder` `Err`: No such file or directory (os error 2).
         >
         > => Warning: This `Responder` implementation has been deprecated.
     - Maybe define an own Error enum, impl Responder for it.
         * Can still use anyhow!
+    - Can likely streamline structure a bit more
+        * Put /md dir into /static/md
+        * Collapse some of the endpoints into common
+    - Errors should have their own hbs template
+    - Remove:
+        * `lol_html`: This is not needed after introducing handlebars

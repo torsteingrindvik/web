@@ -1,0 +1,13 @@
+{{#*inline "page"}}
+
+<div class="shadowy roundy markdown-body backgroundy">
+    <h1>‍Recent Markdown Renders!</h1>
+    {{#each links}}
+    <div class="card-linky roundy">
+        <a href="/md/{{this}}" target="_blank">{{this}}</a>
+    </div>
+    {{/each}}
+</div>
+
+{{/inline}}
+{{~> (parent)~}}

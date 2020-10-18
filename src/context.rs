@@ -77,3 +77,18 @@ impl Default for TokeiContext {
         }
     }
 }
+
+#[derive(Serialize)]
+pub struct ListContext {
+    pub links: Vec<String>,
+    pub parent: &'static str,
+}
+
+impl Default for ListContext {
+    fn default() -> Self {
+        Self {
+            links: vec![],
+            parent: "layout",
+        }
+    }
+}

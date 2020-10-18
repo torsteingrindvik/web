@@ -63,4 +63,17 @@ impl DbConn {
             ))
         }
     }
+
+    pub fn get_all_recent(&self, how_many: usize) -> Result<Vec<String>> {
+        let mut statement = self.0.prepare(&format!(
+            "SELECT slug FROM documents ORDER BY id DESC LIMIT {}",
+            how_many
+        ))?;
+
+        let documents: std::result::Result<Vec<String>, rusqlite::Error> = statement
+            .query_map(params![], |row| Ok(row.get(0)?))?
+            .collect();
+
+        Ok(documents?)
+    }
 }
