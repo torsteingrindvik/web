@@ -2,17 +2,25 @@
 
 Personal website stuff.
 
-## TODO web:
+## TODO:
 
-* Create an "introspection" page using Tokei
-* Move to use handlebars?
-    - Can then wrap all other content in stuff
-        - Header
-        - CONTENT
-        - Footer
+### Blocked on external dev
+* Use stable Rust when we don't depend on nightly features
+* Cache statics
+    - See: https://github.com/SergioBenitez/Rocket/issues/95
+* Use async
+    - See: https://github.com/SergioBenitez/Rocket/issues/1065
+* Use server side events
+    - See: https://github.com/SergioBenitez/Rocket/issues/33
+    - What for? Who knows, we'll find something
+* Use websockets
+    - See: https://github.com/SergioBenitez/Rocket/issues/90
+    - What for? Who knows, we'll find something
 
-## TODO dev:
-
+### Blocked on me
+* Create a "recently made Markdown pages" thing
+* Create a page for this `README.md` as well
+    - Normally it should be inside /md/, can we simply symlink this?
 * Create minimally reproducible bug reports:
     - issue with `uri!()` import
     - issue with `crate_relative!()` import

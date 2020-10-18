@@ -62,3 +62,18 @@ impl Default for HtmlContext {
         }
     }
 }
+
+#[derive(Serialize)]
+pub struct TokeiContext {
+    pub output: String,
+    pub parent: &'static str,
+}
+
+impl Default for TokeiContext {
+    fn default() -> Self {
+        Self {
+            output: String::from(""),
+            parent: "layout",
+        }
+    }
+}

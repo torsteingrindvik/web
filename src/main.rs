@@ -4,13 +4,13 @@
 // TODO: Remove decl_macro. See https://github.com/rust-lang/rust/issues/39412
 
 use anyhow::{anyhow, Result};
-use context::{Card, CardsContext, HtmlContext, LinkableContent};
+use context::{Card, CardsContext, HtmlContext, LinkableContent, TokeiContext};
 use helpers::html_helper;
 use md_to_html::markdown_to_html;
 use rocket::{catch, catchers, get, post, response::Redirect, routes, Data, Request, State};
 use rocket_contrib::serve::StaticFiles;
 use rocket_contrib::templates::Template;
-use std::{fs, sync::Mutex};
+use std::{fs, process::Command, sync::Mutex};
 
 mod context;
 mod db;
@@ -37,10 +37,16 @@ fn root() -> Template {
                     title: "Web related ⌨️",
                     description: "Web related",
                     image: "autumn_forest",
-                    contents: vec![LinkableContent {
-                        description: "Setting up Rocket+HTTPS",
-                        link: "https",
-                    }],
+                    contents: vec![
+                        LinkableContent {
+                            description: "Meta: This project's README",
+                            link: "readme",
+                        },
+                        LinkableContent {
+                            description: "Setting up Rocket+HTTPS",
+                            link: "https",
+                        },
+                    ],
                     content_bg: (1.0, 0.0, 0.0, 0.5),
                 },
                 Card {
@@ -54,19 +60,13 @@ fn root() -> Template {
                     content_bg: (0.0, 1.0, 0.0, 0.5),
                 },
                 Card {
-                    title: "Test 🔋",
-                    description: "Test related WIP stuff",
+                    title: "Misc 🔋",
+                    description: "Mixed bag of goodies (?)",
                     image: "forest_heart",
-                    contents: vec![
-                        LinkableContent {
-                            description: "TODO 3",
-                            link: "invalid",
-                        },
-                        LinkableContent {
-                            description: "TODO 4",
-                            link: "invalid",
-                        },
-                    ],
+                    contents: vec![LinkableContent {
+                        description: "How many lines of code is this website?",
+                        link: "tokei",
+                    }],
                     content_bg: (0.0, 0.0, 1.0, 0.5),
                 },
             ],
@@ -91,6 +91,22 @@ fn markdown(document: String) -> Result<Template> {
             title: document,
             content: html,
             ..HtmlContext::default()
+        },
+    ))
+}
+
+/// Introspection: Display lines of code in project
+#[get("/tokei")]
+fn tokei() -> Result<Template> {
+    let top_dir = env!("CARGO_MANIFEST_DIR");
+
+    let output = Command::new("tokei").args(&[top_dir]).output()?;
+
+    Ok(Template::render(
+        "tokei",
+        &TokeiContext {
+            output: String::from_utf8(output.stdout)?,
+            ..TokeiContext::default()
         },
     ))
 }
@@ -189,7 +205,7 @@ fn main() -> Result<()> {
 
     println!("Launching Rocket");
     rocket::ignite()
-        .mount("/", routes![root, markdown, favicon])
+        .mount("/", routes![root, markdown, favicon, tokei])
         .mount("/md", routes![stored_document])
         .mount("/upload", routes![upload])
         .mount("/html", routes![html])

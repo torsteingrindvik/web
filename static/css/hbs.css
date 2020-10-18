@@ -62,6 +62,10 @@ body {
     background: #d2d1f7;
 }
 
+.marginy {
+    margin: 3rem 2rem;
+}
+
 .card {
     display: grid;
     /* 
@@ -72,14 +76,12 @@ body {
         constraint.
     */
     grid: 225px auto / repeat(auto-fill, minmax(auto, 500px));
-    margin: 3rem 2rem;
 }
 
 .markdown-body {
     box-sizing: border-box;
     min-width: 200px;
     max-width: 980px;
-    margin: 0 auto;
     padding: 45px;
 }
 
@@ -88,6 +90,10 @@ body {
         padding: 15px;
     }
 }
+
+/* pre, code {
+    white-space: pre-line;
+} */
 
 .card-image {
     border-top-left-radius: 15px;
