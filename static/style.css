@@ -1,0 +1,73 @@
+body {
+	background: var(--background);
+}
+
+#main {
+	max-width  : 1000px;
+	margin     : auto;
+	color      : var(--text);
+	padding-top: var(--spacing-big);
+}
+
+:root,
+.style {
+	--shadow              : 0 3px 6px rgba(0, 0, 0, 0.6);
+	--flavor              : #8fbcbb;
+	--foreground          : #434c5e;
+	--foreground-highlight: #434c5e;
+	--background          : #2e3440;
+	--text                : #eceff4;
+	--border-radius       : 10px;
+	--spacing-medium      : 10px;
+	--spacing-big         : 30px;
+}
+
+.api {
+	display: grid;
+	grid-template:
+		'image header header header'
+		'image content content content';
+	border-radius: var(--border-radius);
+	box-shadow   : var(--shadow);
+	margin-bottom: var(--spacing-big);
+	background   : var(--foreground);
+	transition   : 0.4s ease;
+	font-family  : sans-serif;
+	font-weight  : bold;
+	height       : 300px;
+}
+
+.api:hover {
+	background: var(--foreground-highlight);
+	scale     : 1.1;
+}
+
+.api>.header {
+	grid-area              : header;
+	text-align             : center;
+	color                  : var(--text);
+	margin-top             : 0px;
+	padding                : var(--spacing-medium);
+	border-top-right-radius: var(--border-radius);
+}
+
+.api>.header>.subtitle {
+	color: var(--flavor);
+}
+
+
+.api>.image {
+	grid-area                : image;
+	width                    : 385px;
+	max-height               : 100%;
+	object-fit               : cover;
+	align-self               : stretch;
+	border-top-left-radius   : var(--border-radius);
+	border-bottom-left-radius: var(--border-radius);
+}
+
+.api>.content {
+	grid-area : content;
+	text-align: center;
+	padding   : var(--spacing-medium);
+}
