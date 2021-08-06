@@ -1,6 +1,7 @@
 use color_eyre::Result;
 use serde::{Deserialize, Serialize};
 
+/// Television programs.
 #[derive(Debug)]
 pub struct Programs(pub Vec<Program>);
 
@@ -23,15 +24,22 @@ impl From<JsonProgram> for Program {
             .expect("Need at least one image");
 
         Self {
-            title: json_program.main_title,
+            title: json_program
+                .main_title
+                .unwrap_or_else(|| "(No main title)".to_string()),
             image: most_fitting_picture.image_url.to_string(),
-            description: json_program.series_description,
-            datelike: json_program.episode_number_or_date,
+            description: json_program
+                .description
+                .unwrap_or_else(|| "(No description)".to_string()),
+            datelike: json_program
+                .episode_number_or_date
+                .unwrap_or_else(|| "(No date)".to_string()),
         }
     }
 }
 
 impl Programs {
+    /// Fetch television programs.
     pub async fn new() -> Result<Self> {
         let json_programs = fetch().await?;
         dbg!(&json_programs);
@@ -42,23 +50,32 @@ impl Programs {
     }
 }
 
+/// A single television program.
 #[derive(Debug)]
 pub struct Program {
+    /// The title of the program.
     pub title: String,
+
+    /// An image related to the program.
     pub image: String,
+    
+    /// A description of the program.
     pub description: String,
+
+    /// A date or time the program was aired.
+    /// Not reliable as a proper datetime- some times it is given as an actual date,
+    /// at other times only the air time.
     pub datelike: String,
 }
-
 #[derive(Debug, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 struct JsonProgram {
-    id: String,
-    main_title: String,
-    episode_title: String,
+    id: Option<String>,
+    main_title: Option<String>,
+    episode_title: Option<String>,
     image: Image,
-    series_description: String,
-    episode_number_or_date: String,
+    description: Option<String>,
+    episode_number_or_date: Option<String>,
 }
 
 #[derive(Debug, Serialize, Deserialize)]

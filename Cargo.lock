@@ -586,6 +586,7 @@ dependencies = [
  "chrono",
  "color-eyre",
  "futures",
+ "rand 0.8.4",
  "reqwest",
  "rocket",
  "serde",

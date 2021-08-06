@@ -2,11 +2,13 @@ use stpl::Render;
 
 use crate::html::base;
 
+/// Placeholder data.
 pub struct Data {
     name: String,
 }
 
 impl Data {
+    /// Create new data.
     pub fn new(name: &str) -> Self {
         Self {
             name: name.to_string(),
@@ -14,6 +16,7 @@ impl Data {
     }
 }
 
+/// Create a new home page with some data.
 pub fn page(data: &Data) -> impl Render {
     use stpl::html::*;
 
@@ -25,5 +28,5 @@ pub fn page(data: &Data) -> impl Render {
             .collect::<Vec<_>>()),
     );
 
-    base::base(&base::Data::new("Some cool title"), content)
+    base::base("Home page", content)
 }

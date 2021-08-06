@@ -51,8 +51,8 @@ fn get_root() -> Result<content::Html<String>> {
     Ok(content::Html(response))
 }
 
-#[rocket::launch]
-pub fn serve() -> _ {
+/// Start the web server- never returns.
+pub fn serve() -> rocket::Rocket<rocket::Build> {
     rocket::build()
         .mount("/", routes![get_root])
         .mount("/spacenews", routes![get_spacenews])

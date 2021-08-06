@@ -3,6 +3,7 @@ use color_eyre::Result;
 use futures::stream::{FuturesUnordered, StreamExt};
 use serde::{Deserialize, Serialize};
 
+/// HackerNews REST API represented as a vector of stories.
 #[derive(Debug)]
 pub struct HackerNews(pub Vec<Story>);
 
@@ -23,6 +24,7 @@ async fn produce_story(item: Item) -> Result<Story> {
 }
 
 impl HackerNews {
+    /// Get a `HackerNews`, which means fetching all data and massaging it into something manageable.
     pub async fn new() -> Result<Self> {
         let story_items = top_stories().await?;
         dbg!("Got top stories");
@@ -42,8 +44,10 @@ impl HackerNews {
     }
 }
 
+/// A HackerNews story comment.
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Comment {
+    /// The comment text. Note: Not sanitized (may be valid HTML etc).
     pub text: String,
 }
 
@@ -56,17 +60,28 @@ impl Default for Comment {
 }
 
 impl Comment {
+    /// Fetch a new comment from the given item ID.
     pub async fn new(item: &Item) -> Result<Self> {
         fetch_item(item).await
     }
 }
 
+/// A HackerNews story.
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Story {
+    /// The story title.
     pub title: String,
+
+    /// The URL to the story.
     pub url: String,
+
+    /// The comments of this story.
     pub comments: Vec<Comment>,
+
+    /// When this story was published.
     pub time: DateTime<Utc>,
+
+    /// The "upvote"/"likes"/"score" of the story.
     pub score: usize,
 }
 
@@ -115,6 +130,8 @@ impl JsonStory {
     }
 }
 
+/// The HackerNews API uses a number called an item to represent things uniquely,
+/// such as stories and comments.
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Item(usize);
 

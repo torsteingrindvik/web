@@ -1,23 +1,20 @@
 use stpl::Render;
 
-pub struct Data {
-    title: String,
-}
+use crate::util;
 
-impl Data {
-    pub fn new(title: &str) -> Self {
-        Self {
-            title: title.to_string(),
-        }
-    }
-}
-
-pub fn base<C: Render + 'static>(data: &Data, content: C) -> impl Render {
+/// Add some renderable content to the base HTML.
+pub fn base<C: Render + 'static>(data: &str, content: C) -> impl Render {
     use stpl::html::*;
+
+    let nav_items = vec![
+        "nrk".to_string(),
+        "spacenews".to_string(),
+        "hackernews".to_string(),
+    ];
 
     html((
         head((
-            title(data.title.clone()),
+            title(data.to_string()),
             meta.name("description")
                 .content("This is a template test: Using the `stpl` crate."),
             meta.name("viewport")
@@ -29,6 +26,17 @@ pub fn base<C: Render + 'static>(data: &Data, content: C) -> impl Render {
                 .type_("text/css")
                 .href("/static/style.css"),
         )),
-        body(div.id("main")(content)),
+        body((
+            nav.id("nav-bar")(ul(nav_items
+                .into_iter()
+                .map(|nav_item| {
+                    li((
+                        div.class("nav-emoji")(format!("{}", util::random_emoij())),
+                        a.href(format!("/{}", nav_item))(nav_item),
+                    ))
+                })
+                .collect::<Vec<_>>())),
+            div.id("main")(content),
+        )),
     ))
 }

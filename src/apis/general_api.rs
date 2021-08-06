@@ -5,6 +5,9 @@ use crate::util;
 
 use super::{hackernews, nrk, space_flight};
 
+// TODO: Create a trait for this instead.
+
+/// A generalized API able to be displayed in a common way.
 #[derive(Debug, Serialize, Deserialize)]
 pub struct GeneralApi {
     img: String,
@@ -14,6 +17,7 @@ pub struct GeneralApi {
 }
 
 impl GeneralApi {
+    /// Get renderable HTML of the contents.
     pub fn html(&self) -> impl Render {
         div.class("api")((
             div.class("header")((
@@ -28,6 +32,7 @@ impl GeneralApi {
     }
 }
 
+/// Collect several `GeneralApi`s into a collection.
 pub fn render_apis(apis: &[GeneralApi]) -> impl Render {
     apis.iter().map(|apis| apis.html()).collect::<Vec<_>>()
 }
