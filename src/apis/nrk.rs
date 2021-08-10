@@ -42,8 +42,6 @@ impl Programs {
     /// Fetch television programs.
     pub async fn new() -> Result<Self> {
         let json_programs = fetch().await?;
-        dbg!(&json_programs);
-
         let programs = json_programs.into_iter().map(Into::into).collect();
 
         Ok(Self(programs))

@@ -9,3 +9,6 @@ pub mod hackernews;
 
 /// REST API for NRK.
 pub mod nrk;
+
+/// Blog entries.
+pub mod blog;

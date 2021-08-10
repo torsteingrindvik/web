@@ -7,6 +7,7 @@ pub fn base<C: Render + 'static>(data: &str, content: C) -> impl Render {
     use stpl::html::*;
 
     let nav_items = vec![
+        "blog".to_string(),
         "nrk".to_string(),
         "spacenews".to_string(),
         "hackernews".to_string(),

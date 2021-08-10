@@ -3,7 +3,7 @@ use stpl::{html::*, Render};
 
 use crate::util;
 
-use super::{hackernews, nrk, space_flight};
+use super::{blog, hackernews, nrk, space_flight};
 
 // TODO: Create a trait for this instead.
 
@@ -14,11 +14,11 @@ pub struct GeneralApi {
     title: String,
     content: String,
     time: String,
+    url: Option<String>,
 }
 
 impl GeneralApi {
-    /// Get renderable HTML of the contents.
-    pub fn html(&self) -> impl Render {
+    fn card(&self) -> impl Render {
         div.class("api")((
             div.class("header")((
                 h2.class("title")(self.title.to_string()),
@@ -29,6 +29,17 @@ impl GeneralApi {
                 .alt("api image"),
             p.class("content")(self.content.clone()),
         ))
+    }
+
+    /// Get renderable HTML of the contents.
+    pub fn html(&self) -> impl Render {
+        let contents = self.card();
+
+        if let Some(url) = &self.url {
+            a.class("card-link").href(url.to_string())(contents)
+        } else {
+            div(contents)
+        }
     }
 }
 
@@ -44,6 +55,7 @@ impl From<space_flight::News> for GeneralApi {
             title: news.title,
             content: news.summary,
             time: util::date_display(&news.published_at),
+            url: Some(news.url),
         }
     }
 }
@@ -62,6 +74,7 @@ impl From<hackernews::Story> for GeneralApi {
                     .collect::<String>(),
             ),
             time: util::date_display(&story.time),
+            url: Some(story.url),
         }
     }
 }
@@ -73,6 +86,28 @@ impl From<nrk::Program> for GeneralApi {
             title: program.title,
             content: program.description,
             time: program.datelike,
+            url: None,
+        }
+    }
+}
+
+impl From<blog::Blog> for GeneralApi {
+    fn from(blog: blog::Blog) -> Self {
+        Self {
+            img: blog.image_url,
+            title: blog.title,
+            content: String::from(
+                "
+                Todo fill this
+                Todo fill this
+                Todo fill this
+                Todo fill this
+                Todo fill this
+                Todo fill this
+                ",
+            ),
+            time: util::date_display(&blog.published_at),
+            url: Some(blog.blog_url),
         }
     }
 }

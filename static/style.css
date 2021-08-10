@@ -6,6 +6,11 @@ body {
 	/* flex-direction: row; */
 }
 
+.card-link {
+	text-decoration: inherit;
+	color          : inherit;
+}
+
 #main {
 	max-width  : 1000px;
 	margin     : auto;
@@ -14,7 +19,7 @@ body {
 }
 
 .nav-emoji {
-	width: 60px;
+	width     : 60px;
 	text-align: center;
 }
 
