@@ -8,7 +8,7 @@ use serde::{Deserialize, Serialize};
 pub struct News {
     /// An identifier of the news article.
     pub id: usize,
-    
+
     /// Article title.
     pub title: String,
 

@@ -6,3 +6,6 @@ pub mod home;
 
 /// Render functionality.
 pub mod render;
+
+/// Utils to reduce boilerplate or do small things.
+pub mod util;

@@ -113,8 +113,6 @@ struct JsonStory {
 }
 
 async fn fetch_item<T: for<'de> serde::Deserialize<'de>>(item: &Item) -> Result<T> {
-    dbg!("Fetching item: {:?}", item);
-
     Ok(reqwest::get(format!(
         "https://hacker-news.firebaseio.com/v0/item/{}.json",
         item.0

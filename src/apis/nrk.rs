@@ -56,7 +56,7 @@ pub struct Program {
 
     /// An image related to the program.
     pub image: String,
-    
+
     /// A description of the program.
     pub description: String,
 

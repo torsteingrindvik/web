@@ -6,7 +6,7 @@ use crate::{
         general_api::{render_apis, GeneralApi},
         hackernews, nrk, space_flight,
     },
-    html::render::render_content,
+    html::render,
 };
 use rocket::{
     fs::{relative, FileServer},
@@ -19,7 +19,7 @@ type Result<T, E = Debug<color_eyre::Report>> = std::result::Result<T, E>;
 
 #[get("/")]
 fn get_root() -> Result<content::Html<String>> {
-    let response = render_content("Home", "Thanks for stopping by")?;
+    let response = render::render_content("Home", "Thanks for stopping by")?;
 
     Ok(content::Html(response))
 }
@@ -29,7 +29,7 @@ async fn get_spacenews() -> Result<content::Html<String>> {
     let news = space_flight::fetch().await?;
     let apis: Vec<GeneralApi> = news.into_iter().map(Into::into).collect();
 
-    let response = render_content("Space News", render_apis(&apis))?;
+    let response = render::render_content("Space News", render_apis(&apis))?;
 
     Ok(content::Html(response))
 }
@@ -39,7 +39,7 @@ async fn get_hackernews() -> Result<content::Html<String>> {
     let hn = hackernews::HackerNews::new().await?;
     let apis: Vec<GeneralApi> = hn.0.into_iter().map(Into::into).collect();
 
-    let response = render_content("HackerNews", render_apis(&apis))?;
+    let response = render::render_content("HackerNews", render_apis(&apis))?;
 
     Ok(content::Html(response))
 }
@@ -49,7 +49,7 @@ async fn get_nrk() -> Result<content::Html<String>> {
     let programs = nrk::Programs::new().await?;
     let apis: Vec<GeneralApi> = programs.0.into_iter().map(Into::into).collect();
 
-    let response = render_content("NRK", render_apis(&apis))?;
+    let response = render::render_content("NRK", render_apis(&apis))?;
 
     Ok(content::Html(response))
 }
@@ -59,7 +59,7 @@ async fn get_blogs() -> Result<content::Html<String>> {
     let blogs = blog::get_blogs().await?;
     let blogs: Vec<GeneralApi> = blogs.into_iter().map(Into::into).collect();
 
-    let response = render_content("Blog", render_apis(&blogs))?;
+    let response = render::render_content("Blog", render_apis(&blogs))?;
     Ok(content::Html(response))
 }
 
@@ -67,7 +67,15 @@ async fn get_blogs() -> Result<content::Html<String>> {
 async fn get_blog(post: PathBuf) -> Result<content::Html<String>> {
     let content = blog::render_blog(&post).await?;
 
-    Ok(content::Html(content))
+    let post_name = post
+        .file_stem()
+        .and_then(|s| s.to_str())
+        .unwrap_or("Blog post");
+
+    let content = render::div_wrap("blog-post", content)?;
+    let response = render::render_content(post_name, content)?;
+
+    Ok(content::Html(response))
 }
 
 /// Start the web server- never returns.
