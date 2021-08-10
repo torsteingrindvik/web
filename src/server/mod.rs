@@ -11,6 +11,7 @@ use crate::{
 use rocket::{
     fs::{relative, FileServer},
     get,
+    http::{Cookie, CookieJar},
     response::{content, Debug},
     routes,
 };
@@ -18,8 +19,22 @@ use rocket::{
 type Result<T, E = Debug<color_eyre::Report>> = std::result::Result<T, E>;
 
 #[get("/")]
-fn get_root() -> Result<content::Html<String>> {
-    let response = render::render_content("Home", "Thanks for stopping by")?;
+fn get_root(cookies: &CookieJar<'_>) -> Result<content::Html<String>> {
+    const COOKIE: &str = "times_visited";
+    let visited = cookies
+        .get(COOKIE)
+        .and_then(|n| n.value().parse().ok())
+        .unwrap_or(0);
+
+    let response = render::render_content(
+        "Home",
+        format!(
+            "Thanks for stopping by, just like you have {} times before",
+            visited
+        ),
+    )?;
+
+    cookies.add(Cookie::new(COOKIE, (visited + 1).to_string()));
 
     Ok(content::Html(response))
 }
