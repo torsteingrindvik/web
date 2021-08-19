@@ -19,7 +19,7 @@ pub struct GeneralApi {
 
 impl GeneralApi {
     fn card(&self) -> impl Render {
-        div.class("api")((
+        div.class("api card-bg-border")((
             div.class("header")((
                 h2.class("title")(self.title.to_string()),
                 p.class("subtitle")(self.time.to_string()),
@@ -96,16 +96,7 @@ impl From<blog::Blog> for GeneralApi {
         Self {
             img: blog.image_url,
             title: blog.title,
-            content: String::from(
-                "
-                Todo fill this
-                Todo fill this
-                Todo fill this
-                Todo fill this
-                Todo fill this
-                Todo fill this
-                ",
-            ),
+            content: blog.summary,
             time: util::date_display(&blog.published_at),
             url: Some(blog.blog_url),
         }

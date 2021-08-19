@@ -87,7 +87,7 @@ async fn get_blog(post: PathBuf) -> Result<content::Html<String>> {
         .and_then(|s| s.to_str())
         .unwrap_or("Blog post");
 
-    let content = render::div_wrap("blog-post", content)?;
+    let content = render::div_wrap("blog-post card-bg-border", content)?;
     let response = render::render_content(post_name, content)?;
 
     Ok(content::Html(response))

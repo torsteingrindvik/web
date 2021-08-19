@@ -1,14 +1,51 @@
+:root,
+.style {
+	--shadow              : 0 3px 6px rgba(0, 0, 0, 0.6);
+	--flavor              : #8fbcbb;
+	--foreground          : #434c5e;
+	--foreground-highlight: #434c5e;
+	--background          : #2e3440;
+	--text                : #eceff4;
+	--border-radius       : 10px;
+	--spacing-medium      : 10px;
+	--spacing-big         : 30px;
+	--spacing-huge        : 60px;
+	--font                : sans-serif;
+}
+
 body {
-	background       : var(--background);
-	padding          : 0;
-	margin           : 0;
-	display          : flex;
-	/* flex-direction: row; */
+	background : var(--background);
+	padding    : 0;
+	margin     : 0;
+	display    : flex;
+	font-family: var(--font);
+}
+
+.card-bg-border {
+	border-radius: var(--border-radius);
+	box-shadow   : var(--shadow);
+	background   : var(--foreground);
 }
 
 .card-link {
 	text-decoration: inherit;
 	color          : inherit;
+}
+
+.blog-post {
+	padding  : var(--spacing-huge);
+	min-width: 500px;
+}
+
+.blog-post>h1,
+.blog-post>h2,
+.blog-post>h3 {
+	text-align: center;
+	color     : var(--flavor);
+}
+
+.blog-post>p>a {
+	color: hotpink;
 }
 
 #main {
@@ -35,8 +72,6 @@ body {
 	margin         : 0;
 	padding        : 0;
 	color          : var(--flavor);
-	font-family    : var(--font);
-	font-weight    : bold;
 	font-size      : xx-large;
 	background     : var(--foreground);
 }
@@ -55,32 +90,13 @@ body {
 	text-decoration: none;
 }
 
-:root,
-.style {
-	--shadow              : 0 3px 6px rgba(0, 0, 0, 0.6);
-	--flavor              : #8fbcbb;
-	--foreground          : #434c5e;
-	--foreground-highlight: #434c5e;
-	--background          : #2e3440;
-	--text                : #eceff4;
-	--border-radius       : 10px;
-	--spacing-medium      : 10px;
-	--spacing-big         : 30px;
-	--font                : sans-serif;
-}
-
 .api {
 	display: grid;
 	grid-template:
 		'image header header header'
 		'image content content content';
-	border-radius: var(--border-radius);
-	box-shadow   : var(--shadow);
 	margin-bottom: var(--spacing-big);
-	background   : var(--foreground);
 	transition   : 0.4s ease;
-	font-family  : var(--font);
-	font-weight  : bold;
 	height       : 300px;
 }
 

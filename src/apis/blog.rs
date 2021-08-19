@@ -20,6 +20,9 @@ pub struct Blog {
 
     /// When the blog post was written.
     pub published_at: DateTime<Utc>,
+
+    /// A short summary of the contents.
+    pub summary: String,
 }
 
 /// Given a markdown file, render it as HTML.
@@ -69,14 +72,21 @@ pub async fn get_blogs() -> Result<Vec<Blog>> {
                     .ok_or_else(|| eyre!("No stem"))?
                     .to_string_lossy()
                     .to_string();
-                md_files.push((path, created, stem));
+
+                let summary = fs::read_to_string(path)
+                    .await?
+                    .chars()
+                    .take(100)
+                    .collect::<String>();
+
+                md_files.push((summary, created, stem));
             }
         }
     }
 
     Ok(md_files
         .into_iter()
-        .map(|(_path, created, stem)| {
+        .map(|(summary, created, stem)| {
             let blog_name = stem
                 .chars()
                 .enumerate()
@@ -93,6 +103,7 @@ pub async fn get_blogs() -> Result<Vec<Blog>> {
                 "/static/hackernews.png",
                 &format!("/blog/{}.md", stem),
                 created.into(),
+                &summary,
             )
         })
         .collect())
@@ -100,12 +111,19 @@ pub async fn get_blogs() -> Result<Vec<Blog>> {
 
 impl Blog {
     /// Create a new blog post overview.
-    pub fn new(title: &str, image_url: &str, blog_url: &str, published_at: DateTime<Utc>) -> Self {
+    pub fn new(
+        title: &str,
+        image_url: &str,
+        blog_url: &str,
+        published_at: DateTime<Utc>,
+        summary: &str,
+    ) -> Self {
         Self {
             title: title.to_string(),
             image_url: image_url.to_string(),
             blog_url: blog_url.to_string(),
             published_at,
+            summary: summary.to_string(),
         }
     }
 }
